@@ -8,7 +8,7 @@ if [ "$(lsb_release -si)" = "Arch" ] || [ "$(lsb_release -si)" = "Artix" ]; then
     echo "This script must be run on either Arch Linux or Artix Linux. Quitting..."
 fi
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root. Quitting..."
     exit 1
 fi

@@ -20,13 +20,13 @@ usage() {
     echo "Due to the nature of disk device access permissions, the script must"
     echo "be run as root."
     echo
-    echo "erase-disk.sh is licensed under The Unlicense."
+    echo "erase-disk.sh is licensed under the Unlicense."
 }
 
 CRYPT=0
 
-[ "$1" = "-h" -o "$1" = "--help" ] && usage && exit 0
-[ "$1" = "-c" -o "$1" = "--crypt-prep" ] && CRYPT=1 && shift
+[ "$1" = "-h" ] || [ "$1" = "--help" ] && usage && exit 0
+[ "$1" = "-c" ] || [ "$1" = "--crypt-prep" ] && CRYPT=1 && shift
 
 if [ $# -lt 2 ]; then
     echo "=> ERROR: Not enough options!"
@@ -38,7 +38,7 @@ elif [ $# -gt 2 ]; then
     echo
     usage
     exit 1
-elif [ $(id -u) -ne 0 ]; then
+elif [ "$(id -u)" -ne 0 ]; then
     echo "=> ERROR: Must run as root!"
     echo
     usage
@@ -48,9 +48,9 @@ fi
 echo "=> Securely erasing the disk device $2"
 i=1
 
-while [ $i -le $1 ]; do
-    [ $i -eq 1 ] && if="/dev/urandom" || if="/dev/zero"
-    [ $CRYPT -eq 1 -a $i -eq $1 ] && if="/dev/urandom"
+while [ "$i" -le "$1" ]; do
+    [ "$i" -eq 1 ] && if="/dev/urandom" || if="/dev/zero"
+    [ "$CRYPT" -eq 1 ] && [ "$i" -eq "$1" ] && if="/dev/urandom"
 
     echo "\n  -> Begin pass $i with $if"
     dd if="$if" of="$2" status="progress"
@@ -58,7 +58,7 @@ while [ $i -le $1 ]; do
     echo "\n  -> Syncing I/O"
     sync
     
-    i=$(( i + 1 ))
+    i="$(( i + 1 ))"
 done
 
 echo -n "\n=> Done! $2 securely erased"
